@@ -1,24 +1,53 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-	<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script src="https://code.jquery.com/ui/1.13.1/jquery-ui.min.js"></script>
-
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="stylesheet" href="styles.css">
-  <script src="script.js" defer></script>
-  <title>Drag and Drop Pictures</title>
+  <title>Better Instagram</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.css">
+  <style>
+    .container {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      border: 5px solid #555;
+    }
+  </style>
 </head>
 <body>
-  <div id="container">
-    <div id="div1" class="draggable"></div>
-    <div id="div2" class="draggable"></div>
-    <div id="div3" class="draggable"></div>
-    <div id="div4" class="draggable"></div>
-    <div id="div5" class="draggable"></div>
-    <div id="div6" class="draggable"></div>
-  </div>
+
+<div class="container">
+  <div id="div1" class="draggable" style="background-image: url('https://picsum.photos/id/237/200/300');"></div>
+  <div id="div2" class="draggable" style="background-image: url('https://picsum.photos/seed/picsum/200/300');"></div>
+  <div id="div3" class="draggable" style="background-image: url('https://picsum.photos/200/300?grayscale');"></div>
+  <div id="div4" class="draggable" style="background-image: url('https://picsum.photos/200/300/');"></div>
+  <div id="div5" class="draggable" style="background-image: url('https://picsum.photos/200/300.jpg');"></div>
+  <div id="div6" class="draggable" style="background-image: url('https://picsum.photos/id/102/200/300');"></div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+<script>
+  $(function() {
+    $(".draggable").draggable({
+      revert: "invalid",
+      stack: ".draggable"
+    });
+    $(".container").droppable({
+      accept: ".draggable",
+      drop: function(event, ui) {
+        var draggableId = ui.draggable.attr("id");
+        var droppableId = $(this).find(".ui-droppable-active").attr("id");
+        var draggableImage = ui.draggable.css("background-image");
+        var droppableImage = $("#" + droppableId).css("background-image");
+
+        ui.draggable.css("background-image", droppableImage);
+        $("#" + droppableId).css("background-image", draggableImage);
+      }
+    });
+  });
+</script>
+
 </body>
 </html>

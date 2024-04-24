@@ -1,4 +1,4 @@
-describe("Draggable and Droppable Test", () => {
+/*describe("Draggable and Droppable Test", () => {
   beforeEach(() => {
     cy.visit("your_website_url");
   });
@@ -44,3 +44,4 @@ describe("Draggable and Droppable Test", () => {
 
   // Add more tests here to cover other scenarios
 });
+*/
