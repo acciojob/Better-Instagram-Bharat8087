@@ -1,5 +1,5 @@
 //your code here
-document.addEventListener('DOMContentLoaded', function() {
+/*document.addEventListener('DOMContentLoaded', function() {
   const images = document.querySelectorAll('.image');
   
   let draggedItem = null;
@@ -40,14 +40,42 @@ document.addEventListener('DOMContentLoaded', function() {
         draggedItem.innerText = tempText;
       }
     });*/
-	  image.addEventListener('drop', function() {
+	/*  image.addEventListener('drop', function() {
   this.style.border = '';
   if (draggedItem !== null && draggedItem !== this) {
     const tempBackgroundImage = this.style.backgroundImage;
     this.style.backgroundImage = draggedItem.style.backgroundImage;
     draggedItem.style.backgroundImage = tempBackgroundImage;
   }
+});*/
+
+ /* }
+});*/
+$(document).ready(function() {
+  $(".draggable").draggable({
+    revert: "invalid",
+    zIndex: 1000,
+    containment: ".container",
+    start: function() {
+      $(this).addClass("selected");
+    },
+    stop: function() {
+      $(this).removeClass("selected");
+    }
+  });
+
+  $(".draggable").droppable({
+    accept: ".draggable",
+    drop: function(event, ui) {
+      var draggableId = ui.draggable.attr("id");
+      var droppableId = $(this).attr("id");
+      var draggableBg = ui.draggable.css("background-image");
+      var droppableBg = $(this).css("background-image");
+
+      ui.draggable.css("background-image", droppableBg);
+      $(this).css("background-image", draggableBg);
+    }
+  });
 });
 
-  }
-});
+
