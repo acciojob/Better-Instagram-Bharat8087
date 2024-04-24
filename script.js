@@ -51,7 +51,7 @@
 
  /* }
 });*/
-$(document).ready(function() {
+/*$(document).ready(function() {
   $(".draggable").draggable({
     revert: "invalid",
     zIndex: 1000,
@@ -89,6 +89,36 @@ $(document).ready(function() {
       $(this).css("background-image", draggableBg);
     }
   });
-});
+});*/
 
+describe("Draggable and Droppable Test", () => {
+  beforeEach(() => {
+    cy.visit("your_website_url");
+  });
+
+  it("Should have 6 draggable elements", () => {
+    for (let index = 1; index <= 6; index++) {
+      cy.get(`#div${index}`).should("have.length", 1);
+    }
+  });
+
+  it("Should be able to drag elements", () => {
+    for (let index = 1; index <= 6; index++) {
+      cy.get(`#div${index}`).trigger("mousedown", { which: 1 });
+      cy.get(`#div${index}`).trigger("mousemove", { clientX: 500, clientY: 600 });
+      cy.get(`#div${index}`).trigger("mouseup");
+    }
+  });
+
+  it("Should swap background images on drop", () => {
+    // Assuming you have two draggable elements div1 and div2
+    cy.get("#div1").trigger("mousedown", { which: 1 });
+    cy.get("#div2").trigger("mousemove", { clientX: 500, clientY: 600 });
+    cy.get("#div2").trigger("mouseup");
+
+    cy.get("#div1").should("have.css", "background-image", "url('https://picsum.photos/seed/picsum/200/300')");
+    cy.get("#div2").should("have.css", "background-image", "url('https://picsum.photos/id/237/200/300')");
+  });
+
+});
 
