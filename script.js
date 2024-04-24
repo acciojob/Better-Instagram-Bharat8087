@@ -1,6 +1,6 @@
 describe("Draggable and Droppable Test", () => {
   beforeEach(() => {
-    cy.visit("your_website_url");
+    cy.visit("your_actual_website_url");
   });
 
   it("Should have 6 draggable elements", () => {
