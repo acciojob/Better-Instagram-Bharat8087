@@ -29,24 +29,7 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
 <script>
-  $(function() {
-    $(".draggable").draggable({
-      revert: "invalid",
-      stack: ".draggable"
-    });
-    $(".container").droppable({
-      accept: ".draggable",
-      drop: function(event, ui) {
-        var draggableId = ui.draggable.attr("id");
-        var droppableId = $(this).find(".ui-droppable-active").attr("id");
-        var draggableImage = ui.draggable.css("background-image");
-        var droppableImage = $("#" + droppableId).css("background-image");
-
-        ui.draggable.css("background-image", droppableImage);
-        $("#" + droppableId).css("background-image", draggableImage);
-      }
-    });
-  });
+  
 </script>
 
 </body>
