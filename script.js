@@ -63,6 +63,19 @@ $(document).ready(function() {
       $(this).removeClass("selected");
     }
   });
+	describe("Draggable and Droppable Test", () => {
+  beforeEach(() => {
+    cy.visit("your_website_url");
+  });
+
+  it("Should have 6 draggable elements", () => {
+    for (let index = 1; index <= 6; index++) {
+      cy.get(`#div${index}`).should("have.length", 1);
+    }
+  });
+
+});
+
 
   $(".draggable").droppable({
     accept: ".draggable",
