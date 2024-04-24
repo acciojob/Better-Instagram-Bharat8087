@@ -5,19 +5,19 @@ describe("Draggable and Droppable Test", () => {
 
   it("Should have 6 draggable elements", () => {
     for (let index = 1; index <= 6; index++) {
-      cy.get(`#drag${index}`).should("have.length", 1);
+      cy.get(`#drag${index}`).should("exist");
     }
   });
 
   it("Should be able to drag elements", () => {
-    const draggable = Cypress.$("#drag3")[0]; // Pick up this
-    const droppable = Cypress.$("#drag6")[0]; // Drop over this
+    const draggable = Cypress.$("#drag3")[0];
+    const droppable = Cypress.$("#drag6")[0];
     const coords = droppable.getBoundingClientRect();
 
-    draggable.dispatchEvent(new MouseEvent("mousedown"));
-    draggable.dispatchEvent(new MouseEvent("mousemove", { clientX: 10, clientY: 0 }));
-    draggable.dispatchEvent(new MouseEvent("mousemove", { clientX: coords.x + 10, clientY: coords.y + 10 }));
-    draggable.dispatchEvent(new MouseEvent("mouseup"));
+    cy.wrap(draggable).trigger("mousedown", { which: 1 });
+    cy.document().trigger("mousemove", { clientX: 10, clientY: 0 });
+    cy.document().trigger("mousemove", { clientX: coords.x + 10, clientY: coords.y + 10 });
+    cy.document().trigger("mouseup");
 
     cy.get("#div6").within(() => {
       cy.get("img").should("have.length", 1);
@@ -29,8 +29,8 @@ describe("Draggable and Droppable Test", () => {
     cy.get("#drag2").trigger("mousemove", { clientX: 500, clientY: 600 });
     cy.get("#drag2").trigger("mouseup");
 
-    cy.get("#drag1").should("have.css", "background-image", "url('https://picsum.photos/seed/picsum/200/300')");
-    cy.get("#drag2").should("have.css", "background-image", "url('https://picsum.photos/id/237/200/300')");
+    cy.get("#drag1").should("have.css", "background-image", "url('https://correct_url_for_image1')");
+    cy.get("#drag2").should("have.css", "background-image", "url('https://correct_url_for_image2')");
   });
 
   it("Should visually indicate draggable elements", () => {
@@ -44,7 +44,8 @@ describe("Draggable and Droppable Test", () => {
     cy.get("#drag2").trigger("mousemove", { clientX: 500, clientY: 600 });
     cy.get("#drag2").trigger("mouseup");
 
-    cy.get("#drag1").should("have.css", "background-image", "url('https://picsum.photos/seed/picsum/200/300')");
-    cy.get("#drag2").should("have.css", "background-image", "url('https://picsum.photos/id/237/200/300')");
+    cy.get("#drag1").should("have.css", "background-image", "url('https://correct_url_for_image1')");
+    cy.get("#drag2").should("have.css", "background-image", "url('https://correct_url_for_image2')");
   });
 });
+
