@@ -41,3 +41,4 @@ describe("Draggable and Droppable Test", () => {
     cy.get("#drag2").should("have.css", "background-image", "url('https://picsum.photos/id/237/200/300')");
   });
 });
+
