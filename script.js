@@ -32,13 +32,22 @@ document.addEventListener('DOMContentLoaded', function() {
       this.style.border = '';
     });
 
-    image.addEventListener('drop', function() {
+   /* image.addEventListener('drop', function() {
       this.style.border = '';
       if (draggedItem !== null && draggedItem !== this) {
         const tempText = this.innerText;
         this.innerText = draggedItem.innerText;
         draggedItem.innerText = tempText;
       }
-    });
+    });*/
+	  image.addEventListener('drop', function() {
+  this.style.border = '';
+  if (draggedItem !== null && draggedItem !== this) {
+    const tempBackgroundImage = this.style.backgroundImage;
+    this.style.backgroundImage = draggedItem.style.backgroundImage;
+    draggedItem.style.backgroundImage = tempBackgroundImage;
+  }
+});
+
   }
 });
