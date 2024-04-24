@@ -1,6 +1,6 @@
 describe("Draggable and Droppable Test", () => {
   beforeEach(() => {
-    cy.visit("your_actual_website_url");
+    cy.visit("https://your_actual_website_url");
   });
 
   it("Should have 6 draggable elements", () => {
@@ -41,4 +41,3 @@ describe("Draggable and Droppable Test", () => {
     cy.get("#drag2").should("have.css", "background-image", "url('https://picsum.photos/id/237/200/300')");
   });
 });
-
