@@ -1,33 +1,55 @@
-() => {
-    cy.get("#drag3").should('exist').then(draggable => {
-        cy.get("#drag6").should('exist').then(droppable => {
-            const draggableRect = draggable[0].getBoundingClientRect();
-            const droppableRect = droppable[0].getBoundingClientRect();
+const draggables = document.querySelectorAll('.draggable');
 
-            if (!draggableRect || !droppableRect) {
-                throw new Error("Could not get bounding client rect of draggable or droppable element.");
-            }
+let dragSrcEl = null;
 
-            draggable[0].dispatchEvent(new MouseEvent("pointerdown", {
-                clientX: draggableRect.x + draggableRect.width / 2,
-                clientY: draggableRect.y + draggableRect.height / 2,
-                force: true
-            }));
-
-            draggable[0].dispatchEvent(new MouseEvent("pointermove", {
-                clientX: droppableRect.x + droppableRect.width / 2,
-                clientY: droppableRect.y + droppableRect.height / 2,
-                force: true
-            }));
-
-            draggable[0].dispatchEvent(new MouseEvent("pointerup", {
-                force: true
-            }));
-
-            cy.get("#div6").within(() => {
-                cy.get("img").should("have.length", 1);
-            });
-        });
-    });
+function handleDragStart(e) {
+  dragSrcEl = this;
+  e.dataTransfer.effectAllowed = 'move';
+  e.dataTransfer.setData('text/html', this.innerHTML);
 }
 
+function handleDragOver(e) {
+  if (e.preventDefault) {
+    e.preventDefault(); // Necessary. Allows us to drop.
+  }
+
+  e.dataTransfer.dropEffect = 'move';
+
+  return false;
+}
+
+function handleDragEnter() {
+  this.classList.add('over');
+}
+
+function handleDragLeave() {
+  this.classList.remove('over');
+}
+
+function handleDrop(e) {
+  if (e.stopPropagation) {
+    e.stopPropagation(); // stops the browser from redirecting.
+  }
+
+  if (dragSrcEl !== this) {
+    dragSrcEl.innerHTML = this.innerHTML;
+    this.innerHTML = e.dataTransfer.getData('text/html');
+  }
+
+  return false;
+}
+
+function handleDragEnd() {
+  draggables.forEach(function (draggable) {
+    draggable.classList.remove('over');
+  });
+}
+
+draggables.forEach(function (draggable) {
+  draggable.addEventListener('dragstart', handleDragStart);
+  draggable.addEventListener('dragenter', handleDragEnter);
+  draggable.addEventListener('dragover', handleDragOver);
+  draggable.addEventListener('dragleave', handleDragLeave);
+  draggable.addEventListener('drop', handleDrop);
+  draggable.addEventListener('dragend', handleDragEnd);
+});
