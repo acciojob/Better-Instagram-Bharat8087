@@ -1,23 +1,33 @@
 () => {
-    const draggable = Cypress.$("#drag3")[0]; // Pick up this
-    const droppable = Cypress.$("#drag6")[0]; // Drop over this
+    cy.get("#drag3").should('exist').then(draggable => {
+        cy.get("#drag6").should('exist').then(droppable => {
+            const draggableRect = draggable[0].getBoundingClientRect();
+            const droppableRect = droppable[0].getBoundingClientRect();
 
-    if (!draggable || !droppable) {
-        throw new Error("Could not find draggable or droppable elements.");
-    }
+            if (!draggableRect || !droppableRect) {
+                throw new Error("Could not get bounding client rect of draggable or droppable element.");
+            }
 
-    const coords = droppable.getBoundingClientRect();
+            draggable[0].dispatchEvent(new MouseEvent("pointerdown", {
+                clientX: draggableRect.x + draggableRect.width / 2,
+                clientY: draggableRect.y + draggableRect.height / 2,
+                force: true
+            }));
 
-    if (!coords) {
-        throw new Error("Could not get bounding client rect of droppable element.");
-    }
+            draggable[0].dispatchEvent(new MouseEvent("pointermove", {
+                clientX: droppableRect.x + droppableRect.width / 2,
+                clientY: droppableRect.y + droppableRect.height / 2,
+                force: true
+            }));
 
-    draggable.dispatchEvent(new MouseEvent("mousedown"));
-    draggable.dispatchEvent(new MouseEvent("mousemove", { clientX: 10, clientY: 0 }));
-    draggable.dispatchEvent(new MouseEvent("mousemove", { clientX: coords.x + 10, clientY: coords.y + 10 }));
-    draggable.dispatchEvent(new MouseEvent("mouseup"));
+            draggable[0].dispatchEvent(new MouseEvent("pointerup", {
+                force: true
+            }));
 
-    cy.get("#div6").within(() => {
-        cy.get("img").should("have.length", 1);
+            cy.get("#div6").within(() => {
+                cy.get("img").should("have.length", 1);
+            });
+        });
     });
 }
+
