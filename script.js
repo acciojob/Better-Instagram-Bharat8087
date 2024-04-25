@@ -1,6 +1,12 @@
 const draggables = document.querySelectorAll('.draggable');
 
 let dragSrcEl = null;
+() => { 
+  for (let index = 1; index <= 6; index++) { 
+    cy.get(`#div${index}`).should("have.length", 1); 
+  } 
+}
+
 
 function handleDragStart(e) {
   dragSrcEl = this;
@@ -28,7 +34,7 @@ function handleDragLeave() {
 
 function handleDrop(e) {
   if (e.stopPropagation) {
-    e.stopPropagation(); // stops the browser from redirecting.
+    e.stopPropagation(); 
   }
 
   if (dragSrcEl !== this) {
