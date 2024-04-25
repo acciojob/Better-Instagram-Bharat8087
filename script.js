@@ -1,19 +1,19 @@
 $(document).ready(function() {
-    $(".draggable").draggable({
+    $("#div1, #div2, #div3, #div4, #div5, #div6").draggable({
         revert: "invalid",
         helper: "clone",
         zIndex: 100
     });
 
-    $(".draggable").droppable({
+    $("#div1, #div2, #div3, #div4, #div5, #div6").droppable({
         accept: ".draggable",
         drop: function(event, ui) {
             var draggable = ui.draggable;
             var droppable = $(this);
 
-            var tempSrc = draggable.attr("src");
-            draggable.attr("src", droppable.attr("src"));
-            droppable.attr("src", tempSrc);
+            var tempBackground = draggable.css("background-image");
+            draggable.css("background-image", droppable.css("background-image"));
+            droppable.css("background-image", tempBackground);
         }
     });
 });
