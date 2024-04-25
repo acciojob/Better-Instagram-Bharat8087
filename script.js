@@ -7,12 +7,20 @@ $(document).ready(function() {
     $(".draggable").droppable({
         accept: ".draggable",
         drop: function(event, ui) {
-            var draggableId = ui.draggable.attr("id");
-            var droppableId = $(this).attr("id");
+            var draggable = ui.draggable;
+            var droppable = $(this);
 
-            var tempBackground = $("#" + draggableId).css("background-image");
-            $("#" + draggableId).css("background-image", $("#" + droppableId).css("background-image"));
-            $("#" + droppableId).css("background-image", tempBackground);
+            var parentContainer = droppable.parent();
+
+            draggable.detach();
+
+            draggable.appendTo(parentContainer);
+
+            if (draggable.index() < droppable.index()) {
+                droppable.after(draggable);
+            } else {
+                droppable.before(draggable);
+            }
         }
     });
 });
