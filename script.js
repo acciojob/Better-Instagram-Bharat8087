@@ -1,19 +1,26 @@
-$(document).ready(function() {
-    $("#div1, #div2, #div3, #div4, #div5, #div6").draggable({
-        revert: "invalid",
-        helper: "clone",
-        zIndex: 100
-    });
+() => {
+    const draggable = Cypress.$("#drag3")[0]; // Pick up this
+    const droppable = Cypress.$("#drag6")[0]; // Drop over this
+    const draggableRect = draggable.getBoundingClientRect();
+    const droppableRect = droppable.getBoundingClientRect();
 
-    $("#div1, #div2, #div3, #div4, #div5, #div6").droppable({
-        accept: ".draggable",
-        drop: function(event, ui) {
-            var draggable = ui.draggable;
-            var droppable = $(this);
+    draggable.dispatchEvent(new MouseEvent("pointerdown", {
+        clientX: draggableRect.x + draggableRect.width / 2,
+        clientY: draggableRect.y + draggableRect.height / 2,
+        force: true
+    }));
 
-            var tempBackground = draggable.css("background-image");
-            draggable.css("background-image", droppable.css("background-image"));
-            droppable.css("background-image", tempBackground);
-        }
+    draggable.dispatchEvent(new MouseEvent("pointermove", {
+        clientX: droppableRect.x + droppableRect.width / 2,
+        clientY: droppableRect.y + droppableRect.height / 2,
+        force: true
+    }));
+
+    draggable.dispatchEvent(new MouseEvent("pointerup", {
+        force: true
+    }));
+
+    cy.get("#div6").within(() => {
+        cy.get("img").should("have.length", 1);
     });
-});
+}
