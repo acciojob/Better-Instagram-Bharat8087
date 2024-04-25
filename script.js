@@ -11,9 +11,9 @@ $(document).ready(function() {
             var draggable = ui.draggable;
             var droppable = $(this);
 
-            var tempImage = draggable.css("background-image");
-            draggable.css("background-image", droppable.css("background-image"));
-            droppable.css("background-image", tempImage);
+            var tempSrc = draggable.attr("src");
+            draggable.attr("src", droppable.attr("src"));
+            droppable.attr("src", tempSrc);
         }
     });
 });
