@@ -1,12 +1,5 @@
 const draggables = document.querySelectorAll('.draggable');
-
 let dragSrcEl = null;
-() => { 
-  for (let index = 1; index <= 6; index++) { 
-    cy.get(`#div${index}`).should("have.length", 1); 
-  } 
-}
-
 
 function handleDragStart(e) {
   dragSrcEl = this;
@@ -16,11 +9,10 @@ function handleDragStart(e) {
 
 function handleDragOver(e) {
   if (e.preventDefault) {
-    e.preventDefault(); // Necessary. Allows us to drop.
+    e.preventDefault();
   }
 
   e.dataTransfer.dropEffect = 'move';
-
   return false;
 }
 
@@ -34,12 +26,15 @@ function handleDragLeave() {
 
 function handleDrop(e) {
   if (e.stopPropagation) {
-    e.stopPropagation(); 
+    e.stopPropagation();
   }
 
   if (dragSrcEl !== this) {
-    dragSrcEl.innerHTML = this.innerHTML;
-    this.innerHTML = e.dataTransfer.getData('text/html');
+    let srcBackground = dragSrcEl.style.backgroundImage;
+    let targetBackground = this.style.backgroundImage;
+
+    dragSrcEl.style.backgroundImage = targetBackground;
+    this.style.backgroundImage = srcBackground;
   }
 
   return false;
