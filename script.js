@@ -3,16 +3,13 @@ let dragSrcEl = null;
 
 function handleDragStart(e) {
   dragSrcEl = this;
-  e.dataTransfer.effectAllowed = 'move';
+  e.dataTransfer.setData('text/plain', this.style.backgroundImage);
 }
 
 function handleDragOver(e) {
   if (e.preventDefault) {
     e.preventDefault();
   }
-
-  e.dataTransfer.dropEffect = 'move';
-  return false;
 }
 
 function handleDragEnter() {
