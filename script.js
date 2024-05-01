@@ -1,33 +1,9 @@
-const draggables = document.querySelectorAll('.draggable');
-let dragSrcEl = null;
-
-function handleDragStart(e) {
-  dragSrcEl = this;
-  e.dataTransfer.setData('text/plain', this.id);
-}
-
-function handleDragOver(e) {
-  if (e.preventDefault) {
-    e.preventDefault();
-  }
-  e.dataTransfer.dropEffect = 'move';
-  return false;
-}
-
-function handleDragEnter() {
-  this.classList.add('over');
-}
-
-function handleDragLeave() {
-  this.classList.remove('over');
-}
-
 function handleDrop(e) {
   if (e.stopPropagation) {
     e.stopPropagation();
   }
 
-  if (dragSrcEl !== this) {
+  if (dragSrcEl !== this && this.classList.contains('draggable')) {
     let srcId = dragSrcEl.id;
     let targetId = this.id;
 
@@ -43,18 +19,3 @@ function handleDrop(e) {
 
   return false;
 }
-
-function handleDragEnd() {
-  draggables.forEach(function (draggable) {
-    draggable.classList.remove('over');
-  });
-}
-
-draggables.forEach(function (draggable) {
-  draggable.addEventListener('dragstart', handleDragStart);
-  draggable.addEventListener('dragenter', handleDragEnter);
-  draggable.addEventListener('dragover', handleDragOver);
-  draggable.addEventListener('dragleave', handleDragLeave);
-  draggable.addEventListener('drop', handleDrop);
-  draggable.addEventListener('dragend', handleDragEnd);
-});
