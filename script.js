@@ -30,8 +30,15 @@ function handleDrop(e) {
   return false;
 }
 
+function handleDragEnd() {
+  draggables.forEach(function (draggable) {
+    draggable.classList.remove('over');
+  });
+}
+
 draggables.forEach(function (draggable) {
   draggable.addEventListener('dragstart', handleDragStart);
   draggable.addEventListener('dragover', handleDragOver);
   draggable.addEventListener('drop', handleDrop);
+  draggable.addEventListener('dragend', handleDragEnd);
 });
