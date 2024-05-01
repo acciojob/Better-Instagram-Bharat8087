@@ -1,18 +1,44 @@
-Selection of Elements: You have correctly selected all the draggable elements using document.querySelectorAll('.draggable').
+const draggables = document.querySelectorAll('.draggable');
+let dragSrcEl = null;
 
-Storing the Source Element: In the handleDragStart function, you’re storing the source element (the element being dragged) in dragSrcEl. This is correct.
+function handleDragStart(e) {
+  dragSrcEl = this;
+  e.dataTransfer.setData('text/plain', this.id);
+}
 
-Setting the Data Transfer: Still in the handleDragStart function, you’re correctly setting the data to be transferred (the id of the element being dragged) using e.dataTransfer.setData('text/plain', this.id).
+function handleDragOver(e) {
+  if (e.preventDefault) {
+    e.preventDefault();
+  }
+  e.dataTransfer.dropEffect = 'move';
+  return false;
+}
 
-Handling Drag Over: In the handleDragOver function, you’re correctly preventing the browser’s default handling of the data and setting the drop effect to ‘move’.
+function handleDrop(e) {
+  if (e.stopPropagation) {
+    e.stopPropagation();
+  }
 
-Handling Drop: In the handleDrop function, you’re doing several things:
+  if (dragSrcEl !== this) {
+    const srcBackground = dragSrcEl.style.backgroundImage;
+    const targetBackground = this.style.backgroundImage;
 
-Stopping the browser from redirecting.
-Checking if the source element is not the same as the target element.
-If the above check passes, you’re swapping the background images of the source and target elements.
-Cleaning Up: In the handleDragEnd function, you’re removing the ‘over’ class from all draggable elements.
+    dragSrcEl.style.backgroundImage = targetBackground;
+    this.style.backgroundImage = srcBackground;
+  }
 
-Adding Event Listeners: Finally, you’re correctly adding event listeners for the dragstart, dragover, drop, and dragend events to all draggable elements.
+  return false;
+}
 
-Remember, the main goal is to allow the user to drag and drop the divs, swapping their background images in the process.
+function handleDragEnd() {
+  draggables.forEach(function (draggable) {
+    draggable.classList.remove('over');
+  });
+}
+
+draggables.forEach(function (draggable) {
+  draggable.addEventListener('dragstart', handleDragStart);
+  draggable.addEventListener('dragover', handleDragOver);
+  draggable.addEventListener('drop', handleDrop);
+  draggable.addEventListener('dragend', handleDragEnd);
+});
