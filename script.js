@@ -1,15 +1,17 @@
-const draggables = document.querySelectorAll('#div1, #div2, #div3, #div4, #div5, #div6');
+const draggables = document.querySelectorAll('.draggable');
 let dragSrcEl = null;
 
 function handleDragStart(e) {
   dragSrcEl = this;
-  e.dataTransfer.setData('text/plain', this.style.backgroundImage);
+  e.dataTransfer.setData('text/plain', this.id);
 }
 
 function handleDragOver(e) {
   if (e.preventDefault) {
     e.preventDefault();
   }
+  e.dataTransfer.dropEffect = 'move';
+  return false;
 }
 
 function handleDragEnter() {
@@ -26,8 +28,14 @@ function handleDrop(e) {
   }
 
   if (dragSrcEl !== this) {
+    let srcId = dragSrcEl.id;
+    let targetId = this.id;
+
     let srcBackground = dragSrcEl.style.backgroundImage;
     let targetBackground = this.style.backgroundImage;
+
+    dragSrcEl.id = targetId;
+    this.id = srcId;
 
     dragSrcEl.style.backgroundImage = targetBackground;
     this.style.backgroundImage = srcBackground;
