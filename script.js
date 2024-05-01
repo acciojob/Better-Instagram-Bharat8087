@@ -15,21 +15,21 @@ document.addEventListener('DOMContentLoaded', function() {
     return false;
   }
 
-  function handleDrop(e) {
-    if (e.stopPropagation) {
-      e.stopPropagation();
-    }
+ function handleDrop(e) {
+  e.preventDefault();
+  e.stopPropagation();
 
-    if (dragSrcEl !== this) {
-      const srcBackground = dragSrcEl.style.backgroundImage;
-      const targetBackground = this.style.backgroundImage;
+  if (dragSrcEl !== this) {
+    let srcImg = dragSrcEl.querySelector('img').src;
+    let targetImg = this.querySelector('img').src;
 
-      dragSrcEl.style.backgroundImage = targetBackground;
-      this.style.backgroundImage = srcBackground;
-    }
-
-    return false;
+    dragSrcEl.querySelector('img').src = targetImg;
+    this.querySelector('img').src = srcImg;
   }
+
+  return false;
+}
+
 
   function handleDragEnd() {
     draggables.forEach(function (draggable) {
