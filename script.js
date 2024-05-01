@@ -1,5 +1,7 @@
 function dragStart(event) {
-  event.dataTransfer.setData("text/plain", event.target.id);
+  if (event.target && event.target.id) {
+    event.dataTransfer.setData("text/plain", event.target.id);
+  }
 }
 
 document.addEventListener('DOMContentLoaded', function() {
@@ -16,7 +18,7 @@ document.addEventListener('DOMContentLoaded', function() {
       const draggedElement = document.getElementById(data);
       const dropZone = event.target;
 
-      if (draggedElement !== dropZone) {
+      if (draggedElement && dropZone && draggedElement !== dropZone) {
         const parent = draggedElement.parentNode;
         const nextSibling = draggedElement.nextSibling === dropZone ? draggedElement : draggedElement.nextSibling;
         parent.insertBefore(draggedElement, dropZone);
