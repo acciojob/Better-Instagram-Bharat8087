@@ -1,6 +1,4 @@
 const draggables = document.querySelectorAll('.draggable');
-const containers = document.querySelectorAll('.container');
-
 let dragSrcEl = null;
 
 function handleDragStart(e) {
@@ -16,28 +14,14 @@ function handleDragOver(e) {
   return false;
 }
 
-function handleDragEnter(e) {
-  this.classList.add('over');
-}
-
-function handleDragLeave() {
-  this.classList.remove('over');
-}
-
 function handleDrop(e) {
   if (e.stopPropagation) {
     e.stopPropagation();
   }
 
-  if (dragSrcEl !== this && this.classList.contains('draggable')) {
-    let srcId = dragSrcEl.id;
-    let targetId = this.id;
-
-    let srcBackground = dragSrcEl.style.backgroundImage;
-    let targetBackground = this.style.backgroundImage;
-
-    dragSrcEl.id = targetId;
-    this.id = srcId;
+  if (dragSrcEl !== this) {
+    const srcBackground = dragSrcEl.style.backgroundImage;
+    const targetBackground = this.style.backgroundImage;
 
     dragSrcEl.style.backgroundImage = targetBackground;
     this.style.backgroundImage = srcBackground;
@@ -46,20 +30,8 @@ function handleDrop(e) {
   return false;
 }
 
-function handleDragEnd() {
-  containers.forEach(container => {
-    container.classList.remove('over');
-  });
-}
-
-draggables.forEach(draggable => {
+draggables.forEach(function (draggable) {
   draggable.addEventListener('dragstart', handleDragStart);
-  draggable.addEventListener('dragend', handleDragEnd);
-});
-
-containers.forEach(container => {
-  container.addEventListener('dragover', handleDragOver);
-  container.addEventListener('dragenter', handleDragEnter);
-  container.addEventListener('dragleave', handleDragLeave);
-  container.addEventListener('drop', handleDrop);
+  draggable.addEventListener('dragover', handleDragOver);
+  draggable.addEventListener('drop', handleDrop);
 });
