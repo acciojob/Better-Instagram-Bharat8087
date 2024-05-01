@@ -15,21 +15,20 @@ document.addEventListener('DOMContentLoaded', function() {
     return false;
   }
 
- function handleDrop(e) {
-  e.preventDefault();
-  e.stopPropagation();
+  function handleDrop(e) {
+    e.preventDefault();
+    e.stopPropagation();
 
-  if (dragSrcEl !== this) {
-    let srcImg = dragSrcEl.querySelector('img').src;
-    let targetImg = this.querySelector('img').src;
+    if (dragSrcEl !== this) {
+      let srcImg = dragSrcEl.querySelector('img').src;
+      let targetImg = this.querySelector('img').src;
 
-    dragSrcEl.querySelector('img').src = targetImg;
-    this.querySelector('img').src = srcImg;
+      dragSrcEl.querySelector('img').src = targetImg;
+      this.querySelector('img').src = srcImg;
+    }
+
+    return false;
   }
-
-  return false;
-}
-
 
   function handleDragEnd() {
     draggables.forEach(function (draggable) {
