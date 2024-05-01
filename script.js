@@ -1,45 +1,27 @@
+function dragStart(event) {
+  event.dataTransfer.setData("text/plain", event.target.id);
+}
+
 document.addEventListener('DOMContentLoaded', function() {
   const draggables = document.querySelectorAll('.draggable');
-  let dragSrcEl = null;
-
-  function handleDragStart(e) {
-    dragSrcEl = this;
-    e.dataTransfer.setData('text/plain', this.id);
-  }
-
-  function handleDragOver(e) {
-    if (e.preventDefault) {
-      e.preventDefault();
-    }
-    e.dataTransfer.dropEffect = 'move';
-    return false;
-  }
-
-  function handleDrop(e) {
-    e.preventDefault();
-    e.stopPropagation();
-
-    if (dragSrcEl !== this) {
-      let srcImg = dragSrcEl.querySelector('img').src;
-      let targetImg = this.querySelector('img').src;
-
-      dragSrcEl.querySelector('img').src = targetImg;
-      this.querySelector('img').src = srcImg;
-    }
-
-    return false;
-  }
-
-  function handleDragEnd() {
-    draggables.forEach(function (draggable) {
-      draggable.classList.remove('over');
-    });
-  }
 
   draggables.forEach(function (draggable) {
-    draggable.addEventListener('dragstart', handleDragStart);
-    draggable.addEventListener('dragover', handleDragOver);
-    draggable.addEventListener('drop', handleDrop);
-    draggable.addEventListener('dragend', handleDragEnd);
+    draggable.addEventListener('dragstart', dragStart);
+    draggable.addEventListener('dragover', function(event) {
+      event.preventDefault();
+    });
+    draggable.addEventListener('drop', function(event) {
+      event.preventDefault();
+      const data = event.dataTransfer.getData("text/plain");
+      const draggedElement = document.getElementById(data);
+      const dropZone = event.target;
+
+      if (draggedElement !== dropZone) {
+        const parent = draggedElement.parentNode;
+        const nextSibling = draggedElement.nextSibling === dropZone ? draggedElement : draggedElement.nextSibling;
+        parent.insertBefore(draggedElement, dropZone);
+        parent.insertBefore(dropZone, nextSibling);
+      }
+    });
   });
 });
