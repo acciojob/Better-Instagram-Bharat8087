@@ -1,44 +1,18 @@
-const draggables = document.querySelectorAll('.draggable');
-let dragSrcEl = null;
+Selection of Elements: You have correctly selected all the draggable elements using document.querySelectorAll('.draggable').
 
-function handleDragStart(e) {
-  dragSrcEl = this;
-  e.dataTransfer.setData('text/plain', this.id);
-}
+Storing the Source Element: In the handleDragStart function, you’re storing the source element (the element being dragged) in dragSrcEl. This is correct.
 
-function handleDragOver(e) {
-  if (e.preventDefault) {
-    e.preventDefault();
-  }
-  e.dataTransfer.dropEffect = 'move';
-  return false;
-}
+Setting the Data Transfer: Still in the handleDragStart function, you’re correctly setting the data to be transferred (the id of the element being dragged) using e.dataTransfer.setData('text/plain', this.id).
 
-function handleDrop(e) {
-  if (e.stopPropagation) {
-    e.stopPropagation();
-  }
+Handling Drag Over: In the handleDragOver function, you’re correctly preventing the browser’s default handling of the data and setting the drop effect to ‘move’.
 
-  if (dragSrcEl !== this) {
-    const srcBackground = dragSrcEl.style.backgroundImage;
-    const targetBackground = this.style.backgroundImage;
+Handling Drop: In the handleDrop function, you’re doing several things:
 
-    dragSrcEl.style.backgroundImage = targetBackground;
-    this.style.backgroundImage = srcBackground;
-  }
+Stopping the browser from redirecting.
+Checking if the source element is not the same as the target element.
+If the above check passes, you’re swapping the background images of the source and target elements.
+Cleaning Up: In the handleDragEnd function, you’re removing the ‘over’ class from all draggable elements.
 
-  return false;
-}
+Adding Event Listeners: Finally, you’re correctly adding event listeners for the dragstart, dragover, drop, and dragend events to all draggable elements.
 
-function handleDragEnd() {
-  draggables.forEach(function (draggable) {
-    draggable.classList.remove('over');
-  });
-}
-
-draggables.forEach(function (draggable) {
-  draggable.addEventListener('dragstart', handleDragStart);
-  draggable.addEventListener('dragover', handleDragOver);
-  draggable.addEventListener('drop', handleDrop);
-  draggable.addEventListener('dragend', handleDragEnd);
-});
+Remember, the main goal is to allow the user to drag and drop the divs, swapping their background images in the process.
