@@ -1,28 +1,42 @@
-function dragStart(event) {
-  if (event.target && event.target.id) {
-    event.dataTransfer.setData("text/plain", event.target.id);
-  }
-}
+document.addEventListener('DOMContentLoaded', function () {
+  const divs = document.querySelectorAll('.draggable');
 
-document.addEventListener('DOMContentLoaded', function() {
-  const draggables = document.querySelectorAll('.draggable');
+  let draggedItem = null;
 
-  draggables.forEach(function (draggable) {
-    draggable.addEventListener('dragstart', dragStart);
-    draggable.addEventListener('dragover', function(event) {
-      event.preventDefault();
+  divs.forEach(div => {
+    div.addEventListener('dragstart', function () {
+      draggedItem = this;
+      setTimeout(() => {
+        this.style.display = 'none';
+      }, 0);
     });
-    draggable.addEventListener('drop', function(event) {
-      event.preventDefault();
-      const data = event.dataTransfer.getData("text/plain");
-      const draggedElement = document.getElementById(data);
-      const dropZone = event.target;
 
-      if (draggedElement && dropZone && draggedElement !== dropZone) {
-        const parent = draggedElement.parentNode;
-        const nextSibling = draggedElement.nextSibling === dropZone ? draggedElement : draggedElement.nextSibling;
-        parent.insertBefore(draggedElement, dropZone);
-        parent.insertBefore(dropZone, nextSibling);
+    div.addEventListener('dragend', function () {
+      setTimeout(() => {
+        draggedItem.style.display = 'block';
+        draggedItem = null;
+      }, 0);
+    });
+
+    div.addEventListener('dragover', function (e) {
+      e.preventDefault();
+    });
+
+    div.addEventListener('dragenter', function (e) {
+      e.preventDefault();
+      this.style.backgroundColor = 'rgba(0, 0, 0, 0.2)';
+    });
+
+    div.addEventListener('dragleave', function () {
+      this.style.backgroundColor = '';
+    });
+
+    div.addEventListener('drop', function () {
+      this.style.backgroundColor = '';
+      if (draggedItem !== null) {
+        const tempBackground = this.style.backgroundImage;
+        this.style.backgroundImage = draggedItem.style.backgroundImage;
+        draggedItem.style.backgroundImage = tempBackground;
       }
     });
   });
