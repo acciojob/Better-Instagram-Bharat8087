@@ -1,43 +1,33 @@
-document.addEventListener('DOMContentLoaded', function () {
-  const divs = document.querySelectorAll('.draggable');
+const draggables = document.querySelectorAll('.draggable');
 
-  let draggedItem = null;
+let draggedItem = null;
 
-  divs.forEach(div => {
-    div.addEventListener('dragstart', function () {
-      draggedItem = this;
-      setTimeout(() => {
-        this.style.display = 'none';
-      }, 0);
-    });
+draggables.forEach(draggable => {
+  draggable.addEventListener('dragstart', () => {
+    draggedItem = draggable;
+    setTimeout(() => {
+      draggable.style.display = 'none';
+    }, 0);
+  });
 
-    div.addEventListener('dragend', function () {
-      setTimeout(() => {
-        draggedItem.style.display = 'block';
-        draggedItem = null;
-      }, 0);
-    });
+  draggable.addEventListener('dragend', () => {
+    setTimeout(() => {
+      draggedItem.style.display = 'block';
+      draggedItem = null;
+    }, 0);
+  });
 
-    div.addEventListener('dragover', function (e) {
-      e.preventDefault();
-    });
+  draggable.addEventListener('dragover', e => {
+    e.preventDefault();
+  });
 
-    div.addEventListener('dragenter', function (e) {
-      e.preventDefault();
-      this.style.backgroundColor = 'rgba(0, 0, 0, 0.2)';
-    });
-
-    div.addEventListener('dragleave', function () {
-      this.style.backgroundColor = '';
-    });
-
-    div.addEventListener('drop', function () {
-      this.style.backgroundColor = '';
-      if (draggedItem !== null) {
-        const tempBackground = this.style.backgroundImage;
-        this.style.backgroundImage = draggedItem.style.backgroundImage;
-        draggedItem.style.backgroundImage = tempBackground;
-      }
-    });
+  draggable.addEventListener('dragenter', e => {
+    e.preventDefault();
+    if (draggedItem !== null && draggedItem !== draggable) {
+      // Swap the background images
+      const tempBackground = draggedItem.style.backgroundImage;
+      draggedItem.style.backgroundImage = draggable.style.backgroundImage;
+      draggable.style.backgroundImage = tempBackground;
+    }
   });
 });
